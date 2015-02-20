@@ -13,7 +13,11 @@ Eu não me responsabilizo pelo mal uso deste script.
 
 # Descrição
 
-Este script realiza um ataque de negação de serviço (DoS) baseado na potência do computador. O interessante dele é que ele faz um loop de criação de variaveis para criação de threads que retornam uma sub rotina.
+Este script realiza um ataque de negação de serviço (DoS) baseado na potência do computador. O interessante dele é que ele faz um loop de criação de variaveis para criação de threads automáticas que retornam uma sub rotina.
+
+É altamente recomendado que você possua computadores com um processador Core i3 ou semelhante e 4 Gb de RAM DDR3 ou mais pois com certeza vai travar seu computador caso não tenha estes requisitos.
+
+É recomendado também que você use mantenha tudo fechado e rode somente o script para economizar mais memória RAM e seu computador não travar.
 
 # COMO EXECUTAR O SCRITP
 
