@@ -19,6 +19,12 @@ Este script realiza um ataque de negação de serviço (DoS) baseado na potênci
 
 É recomendado também que você use mantenha tudo fechado e rode somente o script para economizar mais memória RAM e seu computador não travar.
 
+
+PS: Caso sua distro não seja Debian, aqui esta um link para baixar a versão 1.0 do script que é universal.
+
+-> https://mega.co.nz/#!hoBxDLqK!0i9XcGwj9L0UiJSfTqbQvBvwWf__Bkl-F8WEvhDpBhc
+
+
 # COMO EXECUTAR O SCRITP
 
 Basta você caminhar até o diretório aonde se encontra o script e roda-lo com o comando "~$ perl MultiStresser.pl"
